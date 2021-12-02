@@ -51,13 +51,24 @@ snowman_selector <- function(guesses){
   }
 }
 
+word_filler <- function(correct_guesses, word){
+  b <- character(length(word))
+for (i in 1:length(word)){
+  if (word[i] %in% correct_guesses){
+    b[i] <- word[i]
+  }
+}
+  return(b)
+}
+
+
 incorrect_guesses <- 0
 correct_guesses <- 0
 correctly_guessed_letters <- character(0)
 plot(snowman1)
 print("Welcome to the Snowman Game! Its up to you to correctly guess the secret word and save the snowman from a watery end!")
 print("Lets begin!")
-while ((correct_guesses < length(word_split)) & (incorrect_guesses < 9)) {
+while ((correct_guesses < length(unique(word_split))) & (incorrect_guesses < 9)) {
   guess <- readline("Enter your guess: ")
   match <- checker(word_split, guess)
       if (match==FALSE){
@@ -68,12 +79,14 @@ while ((correct_guesses < length(word_split)) & (incorrect_guesses < 9)) {
         print("correct")
         correct_guesses <- correct_guesses + 1
         correctly_guessed_letters <- append(correctly_guessed_letters, guess)
+        print(word_filler(correctly_guessed_letters, word_split))
   } 
  }
- if (correct_guesses == length(word_split)){
+ if (correct_guesses == length(unique(word_split))){
    print("Congradulations! You've saved the snowman!")
  } else if (incorrect_guesses == 9) {
    print ("Oh No! You've melted the snowman!")
  }
  
-
+again <- readline("Would you like to play again?")
+if(again == "y"){source("Hangman_Test.R")}
